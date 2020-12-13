@@ -10,7 +10,7 @@
 %%
 %% Version 1.0.2, 2020-05-07
 
-\section{Technische Grundlagen}
+\section{Technische  Funktionsweise der C2X-Kommunikation}
 \label{ch:FirstContentSection}
 
 %% -------------------
@@ -21,18 +21,47 @@ Hier grob den technischen Ablauf beschreiben und die darauf folgenden Themen kur
 
 \subsection{Public-Key Infrastruktur}
 \label{sec:FirstContentSection:FirstSubSection}
-Im Allgemeinen
+Im folgenden Abschnitt wird der Aufbau der Public-Key Infrastruktur in Europa näher beschrieben. 
+
+PKI für V2X Kommunikation - Aufbau EA, AA, EE - \cite{Strubbe2017}
+
+Eine oder mehrere CAs (Certification Authorities) 
+Root CA + Sub-CAs (mindestens 2)
+ITS Stationen
+
+2 Arten von Sub-CAs: Enrolment Authorities (EA), Authorization Authorities (AA)
+
+End-Entitäten (ITS Stationen) registrieren sich bei der EA und erhalten ein Enrolment Credential - mehrere Jahre gültig. Die EA kennt  die Registrierungsinformationen von der EE: Fahrzeugidentifizierungsnummer usw. und Public Key. Die EE signieren den initialen Zertifikatsrequest mit einem privaten Schlüssel und übermittelt ihn an die EA. Falls die Daten stimmen - Enrolment Credential (EC).
+
+Mit einem gültigen EC kann die EE Authorization Tickets (AT) bei der AA beantragen - Zertifikate für V2X Kommunikation, kurzzeitgültig, dienen der Senderpseudonymität. Keinen eindeutigen Identifikator! Mit dem AT werden CAMs und DENMs signiert. Der AT Request enthält verschlüsselte Daten, die nur von der EA ausgelesen werden können. Die EA bestätigt die Authentizität der Daten mit dem angehängten EC und schickt eine Statusmeldung an die AA, ohne diese zusätzliche Information preiszugeben. Es ist wichtig, die EA und AA organizatorisch zu trennen, da sonst eine Zuordung mit einem AA möglich wäre.
+
+Nachdem die mit dem AT signierte Nachricht erfolgreich an den Empfänger übermittelt wurde, nutzt er den AT, um die Nachricht zu verifizieren. Dies erfolgt mittels einer Kettenprüfung durch die AA und das entsprechende Root-Zertifikat, wodurch die Autentizität der Nachricht festgestellt wird.
+
+In Europa ist zusätzlich zu der oben beschriebenen PKI eine globale Vertrauensliste vorgesehen, die innerhalb den europäischen Grenzen alle vertrauenswürdige Root-CA-Zertifikate beinhaltet.  
+
 In Europa - Trust List Managers
 
 \cite{SecurityCITS} - European certificate policy for C-ITS
 
-PKI für V2X Kommunikation - Aufbau EA, AA, EE - \cite{Strubbe2017}
 Verschlüsselung, Trust and Privacy Management - \cite{ETSI2018}
 
 ECDSA Algorithmus basierend auf elliptischen Kurven (ECC) - \cite{Barker2013}
 
 \subsection{Nachrichtenformate}
 \label{sec:FirstContentSection:SecondSubSection}
+
+Für die Car-2-Car Kommunikation sind zur Zeit zwei Nachrichtenformate vorgesehen:
+- die Cooperative Awareness Message (CAM) und die 
+- Decentralized Environmental Notification Message (DENM) (hier Referenz zu ETSI)
+
+Im weiteren wird nur die CAM betrachtet, da die DENM keine personenbezogenen Daten beinhaltet und im datenschutzrechtlichem Sinne kein Problem darstellt \cite{Kiometzis2017}. Der Aufbau einer CAM wird in der Abbildung ... dargestellt. Sie besteht aus vier Elementen: Header, CAM Information, Signature und Certificate. Die tatsächliche Information über das Fahrzeug wird im Block CAM Information gespeichert. Er beinhaltet sowie dynamische Daten (z.B. Last Geographic Position, Speed) als auch statische Daten über das Fahrzeug, die trotz ständigem Pseudonymwechsel identisch bleiben (z.B. Length, Weights). 
+
+
+
+
+
+
+
 
 \cite{ETSI2013} - Security Headers and Certificate Formats
 
@@ -41,15 +70,27 @@ Eventuell ein Schaubild für die Nachrichtenformate erstellen und hier referenzi
 \subsection{Angriffsmöglichkeiten}
 \label{sec:FirstContentSection:ThirdSubSection}
 
-"Big Brother Angreifer" \cite{Wiedersheim2010}
+Es existieren mehrere Möglichkeiten, um mithilfe von CAMs Bewegungsprofile von Fahrzeugen und gegebenfalls Verhaltensprofile von ihren Fahrern zu erstellen. Im folgenden Abschnitt werden einige Angriffsarten auf die Pseudonymität von CAMs näher beschrieben und analysiert. 
 
-Überwachungstool - CAM-Trace
+Als erstes Beispiel sei ein so genannter "Big Brother Angreifer" angeführt, der eine Infrastruktur von Empfangseinrichtungen in einer georgraphischen Region betreibt und in der Lage ist, in diesem Gegend CAMs von Fahrzeugen zu erfassen und auszuwerten. Das wäre möglich, indem der Angreifer zum Beispiel eine Fahrzeug-Flotte aufstellt, die eingehende CAMs an einen zentralen Server übermittelt. Auch wenn vorbeifahrende Fahrzeuge ihr Pseudonym jede 10 Sekunden ändern würden, könnten sie mit solch einer Infrastruktur verfolgt werden \cite{Wiedersheim2010}. Da diese Art von Überwachung alle Fahrzeugdaten in der Gegend erfassen würde, könnte sie für breitere Verkehrsanalysen genutzt werden.
+ 
+Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahrzeugen aufzuzeichnen. Zum Beispiel kann man mithilfe eines Überwachungstool so genannte CAM-Traces erstellen, d.h. die gefahrene Strecke eines Fahrzeugs und alle von ihm auf dieser Strecke erstellten CAMs. Auch wenn das Fahrzeug regelmäßig seinen Signaturschlüssel wechselt, würde es reichen, nur eine CAM aus der CAM-Trace dem Fahrzeug eindeutig zuzuordnen, um die gesamte CAM-Trace diesem Fahrzeug zuzuordnen \cite{Kiometzis2017}. Es gibt eine Reihe von Methoden, um diese Zuordnung durchzuführen. In \cite{Ullmann2016} wurde dargelegt, dass sie aufgrund der sog. Secondary Vehicle Identifier erfolgen kann. Diese wird von diversen drahtlosen Schnittstellen im Auto zur Verfügung gestellt (z.B. eine Headunit, die eine öffentliche Bluetooth-Schnittstelle mit einem nutzerfreundlichen Namen besitzt). Die Secondary Vehicle Identifiers sind einfach zu erfassen und können einer eindeutigen Zuordnung der empfangenen CAM-Trace zum Fahrzeug dienen. 
 
-Secondary Vehicle Identifier - \cite{Ullmann2016}
+
 
 z:B: nervöse Fahrer können von ruhigen unterschieden werden - \cite{Dettki2005}
 
-Andere Papers und andere möglichen Datenschutzverletzungen finden. 
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Vereinbarkeit mit datenschutzrechtlichen Prinzipien}
 \label{ch:SecondContentSection}
@@ -77,9 +118,9 @@ Art.20 DSGVO - "Recht auf Datenübertragbarkeit"
 
 \cite{Straub2018} - Analyse der Datenübertragbarkeit, Begründung der DSGVO-Anwendbarkeit
 
-\subsection{Andere Datenschutzmaßnahmen}
+\subsection{Datenschutzmaßnahmen}
 
-\cite{Seewald2018} - alle o.g. Datenschutzmaßnahmen + "obligation to raport a data breach, to conduct a data protection impact assessment". "analytical progress of AI". Guter Ausgangspunkt für Kapitel \ref{sec:SecondContentSection:SecondSubsection}
+\cite{Seewald2018} - alle o.g. Datenschutzmaßnahmen + "obligation to report a data breach, to conduct a data protection impact assessment". "analytical progress of AI". Guter Ausgangspunkt für Kapitel \ref{sec:SecondContentSection:SecondSubsection}
 
 Die in \cite{Kiometzis2017} aufgeführten Empfehlungen untersuchen und analysieren. 
 
