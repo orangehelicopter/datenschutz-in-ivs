@@ -10,87 +10,61 @@
 %%
 %% Version 1.0.2, 2020-05-07
 
-\section{Technische  Funktionsweise der C2X-Kommunikation}
+\section{Technische  Funktionsweise der C2C-Kommunikation}
 \label{ch:FirstContentSection}
 
 %% -------------------
 %% | Example content |
 %% -------------------
-
-Hier grob den technischen Ablauf beschreiben und die darauf folgenden Themen kurz vorstellen.
+Im folgenden Abschnitt wird die Funktionsweise der C2C-Kommunikation und die dafür benötigte Infrastruktur näher beschrieben. Der Nachrichtenaustausch zwischen Fahrzeugen beruht auf Public-Key Kryptografie, somit werden die Nachrichten mit einer Signatur und einem Zertifikat versehen, die von einer zentralen Stelle ausgegeben werden. Weiterhin wird auf die Nachrichtenformate der C2C-Kommunikation eingegangen, sowie auf die darin gespeicherten Daten, die möglicherweise für die Identifikation des Fahrzeugs benutzt werden können. Des Weiteren werden mögliche Angriffe auf die Pseudonymität der Nachrichten aufgeführt, aufgrund deren Bewegungsprofile von Fahrzeugen erstellt werden können.
 
 \subsection{Public-Key Infrastruktur}
 \label{sec:FirstContentSection:FirstSubSection}
-Im folgenden Abschnitt wird der Aufbau der Public-Key Infrastruktur in Europa näher beschrieben. 
+ 
+Um den oben genannten Nachrichtenaustausch zu ermöglichen, braucht man eine entsprechende Public-Key Infrastruktur (PKI), die aus einer oder mehreren Certification Authorities (CAs) besteht. Die CAs sind in der Lage, digitale Zertifikate zu erstellen, diese Zertifikate der End-Entitäten zu erteilen und zu verifizieren. Als End-Entitäten fungieren ITS-Stationen (u.a. Fahrzeuge), die die erstellten Zertifikate für die Kommunikation untereinander verwenden und somit die Authentizität von einer Nachricht beweisen und überprüfen können  \cite{Strubbe2017}. 
 
-PKI für V2X Kommunikation - Aufbau EA, AA, EE - \cite{Strubbe2017}
+Die PKI wird aus drei Stufen zusammengesetzt \cite{SecurityCITS}: 
+\begin{itemize}
+	\item Root-CAs (erstellen Zertifikate für untergeordnete CAs)
+	\item Mindestens zwei Sub-CAs
+	\item End-Entitäten (EEs)
+\end{itemize}
 
-Eine oder mehrere CAs (Certification Authorities) 
-Root CA + Sub-CAs (mindestens 2)
-ITS Stationen
+Darüber hinaus gibt es zwei Arten von Sub-CAs: Enrolment Authorities (EA) und Authorization Authorities (AA). Die EAs erstellen langlebige Zertifikate für EEs, die für die Authentifizierung innerhalb der PKI verwendet werden. Die AAs hingegen stellen kurzzeitige Zertifikate zur Verfügung, mit denen die EEs (z.B. Fahrzeuge) untereinander kommunizieren können ohne die Pseudonymität von einzelnen Entitäten zu verletzen.
 
-2 Arten von Sub-CAs: Enrolment Authorities (EA), Authorization Authorities (AA)
+Bevor jegliche Kommunikation stattgefunden hat, muss sich die End-Entität zunächst bei der zugehörigen EA registrieren und ein Enrolment Credential erhalten, das mehrere Jahre gültig ist. Die EA bekommt dabei die Registrierungsinformationen von der EE, zum Beispiel ihre Fahrzeugidentifizierungsnummer und ihren öffentlichen Schlüssel. Die EE signiert den initialen Zertifikatsrequest mit ihrem eingebauten privaten Schlüssel und übermittelt ihn an die EA. Falls die Daten übereinstimmen, erhält die EE einen Enrolment Credential (EC).
 
-End-Entitäten (ITS Stationen) registrieren sich bei der EA und erhalten ein Enrolment Credential - mehrere Jahre gültig. Die EA kennt  die Registrierungsinformationen von der EE: Fahrzeugidentifizierungsnummer usw. und Public Key. Die EE signieren den initialen Zertifikatsrequest mit einem privaten Schlüssel und übermittelt ihn an die EA. Falls die Daten stimmen - Enrolment Credential (EC).
+Mit einem gültigen EC kann die EE weiterhin sogenannte Authorization Tickets (AT) bei der AA beantragen. ATs sind kurzzeitgültige Zertifikate für C2X Kommunikation, die oft gewechselt werden und somit der Senderpseudonymität dienen. Die Nachrichten sollten keinen eindeutigen Identifikator erhalten, damit kein Personenbezug hergestellt werden kann. Daher werden CAMs und DENMs mit ATs signiert und nicht mit den langlebigen ETs, die für eine EE über mehrere Jahre gültig ist. 
 
-Mit einem gültigen EC kann die EE Authorization Tickets (AT) bei der AA beantragen - Zertifikate für V2X Kommunikation, kurzzeitgültig, dienen der Senderpseudonymität. Keinen eindeutigen Identifikator! Mit dem AT werden CAMs und DENMs signiert. Der AT Request enthält verschlüsselte Daten, die nur von der EA ausgelesen werden können. Die EA bestätigt die Authentizität der Daten mit dem angehängten EC und schickt eine Statusmeldung an die AA, ohne diese zusätzliche Information preiszugeben. Es ist wichtig, die EA und AA organizatorisch zu trennen, da sonst eine Zuordung mit einem AA möglich wäre.
+Ein AT wird von einer Entität bei der AA beantragt. Die Anfrage an die AA enthält unter anderem verschlüsselte Daten, die nur von der entsprechenden EA ausgelesen werden können \cite{ETSI2018}, darunter die EC von der Entität. Die EA bestätigt die Authentizität der Daten mit dem angehängten EC und schickt eine Statusmeldung an die AA, ohne diese zusätzliche Information preiszugeben. Es ist wichtig, die EA und AA organisatorisch getrennt zu halten, da sonst bei der AT-Anfrage eine Zuordnung zu der End-Entität bzw. ihrem EC möglich wäre.
 
-Nachdem die mit dem AT signierte Nachricht erfolgreich an den Empfänger übermittelt wurde, nutzt er den AT, um die Nachricht zu verifizieren. Dies erfolgt mittels einer Kettenprüfung durch die AA und das entsprechende Root-Zertifikat, wodurch die Autentizität der Nachricht festgestellt wird.
+Nachdem die mit dem AT signierte Nachricht erfolgreich an die empfangende EE übermittelt wurde, nutzt sie den AT um die Nachricht zu verifizieren. Dies erfolgt mittels einer Kettenprüfung durch die AA und das entsprechende Root-Zertifikat, wodurch die Authentizität der Nachricht festgestellt wird.
 
-In Europa ist zusätzlich zu der oben beschriebenen PKI eine globale Vertrauensliste vorgesehen, die innerhalb den europäischen Grenzen alle vertrauenswürdige Root-CA-Zertifikate beinhaltet.  
-
-In Europa - Trust List Managers
-
-\cite{SecurityCITS} - European certificate policy for C-ITS
-
-Verschlüsselung, Trust and Privacy Management - \cite{ETSI2018}
-
-ECDSA Algorithmus basierend auf elliptischen Kurven (ECC) - \cite{Barker2013}
+In Europa ist zusätzlich zu der oben beschriebenen PKI eine globale Vertrauensliste vorgesehen, die innerhalb der europäischen Grenzen alle vertrauenswürdige Root-CA-Zertifikate beinhaltet. Diese wird von einem zentralen Trust List Manager (TLM) erstellt und elektronisch signiert. Somit wird die Interoperabilität von europäischen PKIs über Grenzen sichergestellt. Darüber hinaus ist es wichtig, die nicht mehr vertrauenswürdigen Zertifikate zurückziehen zu können - dies wird durch sogenannte Certificate Revocation Lists (CRL) sichergestellt. Diese werden allen PKI-Teilnehmern von der jeweiligen Root-CA zur Verfügung gestellt und enthalten die Liste mit allen revozierten Zertifikaten.  
 
 \subsection{Nachrichtenformate}
 \label{sec:FirstContentSection:SecondSubSection}
 
-Für die Car-2-Car Kommunikation sind zur Zeit zwei Nachrichtenformate vorgesehen:
-- die Cooperative Awareness Message (CAM) und die 
-- Decentralized Environmental Notification Message (DENM) (hier Referenz zu ETSI)
+Die Nachrichtenformate, die für die oben beschriebene PKI nötig sind, wurden von dem Europäischen Institut für Telekommunikationsnormen (ETSI) definiert. Im Weiteren wird auf \cite{ETSI2018} verwiesen, in dem die Paketstruktur für gesicherte C2X-Nachrichten und deren Zertifikatsformat festgelegt wurde. 
 
-Im weiteren wird nur die CAM betrachtet, da die DENM keine personenbezogenen Daten beinhaltet und im datenschutzrechtlichem Sinne kein Problem darstellt \cite{Kiometzis2017}. Der Aufbau einer CAM wird in der Abbildung ... dargestellt. Sie besteht aus vier Elementen: Header, CAM Information, Signature und Certificate. Die tatsächliche Information über das Fahrzeug wird im Block CAM Information gespeichert. Er beinhaltet sowie dynamische Daten (z.B. Last Geographic Position, Speed) als auch statische Daten über das Fahrzeug, die trotz ständigem Pseudonymwechsel identisch bleiben (z.B. Length, Weights). 
+Der grobe Aufbau einer gesicherten C2X-Nachricht wird in der Abbildung ... dargestellt. Sie enthält unter anderem die ECDSA-Signatur (\cite{Barker2013}), den Verifikationsschlüssel des Senders und die eigentliche Nachricht, die im Payload gespeichert ist. Für die Car-2-Car Kommunikation sind zurzeit zwei Nachrichtenformate vorgesehen:
+\begin{itemize}
+	\item die Cooperative Awareness Message (CAM) und die 
+	\item Decentralized Environmental Notification Message (DENM) \cite{ETSI2013}.
+\end{itemize}
 
-
-
-
-
-
-
-
-\cite{ETSI2013} - Security Headers and Certificate Formats
-
-Eventuell ein Schaubild für die Nachrichtenformate erstellen und hier referenzieren
+Im Weiteren wird nur die CAM betrachtet, da die DENM keine personenbezogenen Daten beinhaltet und im datenschutzrechtlichem Sinne kein Problem darstellt \cite{Kiometzis2017}. Der Aufbau einer CAM wird in der Abbildung ... dargestellt. Sie besteht aus vier Elementen: Header, CAM Information, Signature und Certificate. Die tatsächliche Information über das Fahrzeug wird im Block CAM Information gespeichert. Er beinhaltet sowohl dynamische Daten (z.B. Last Geographic Position, Speed) als auch statische Daten über das Fahrzeug, die trotz ständigem Pseudonymwechsel identisch bleiben (z.B. Length, Weights). Eine CAM erhält keinen primären Identifikator, aufgrund dessen eine eindeutige Zuordnung zum Fahrzeug möglich wäre.
 
 \subsection{Angriffsmöglichkeiten}
 \label{sec:FirstContentSection:ThirdSubSection}
 
-Es existieren mehrere Möglichkeiten, um mithilfe von CAMs Bewegungsprofile von Fahrzeugen und gegebenfalls Verhaltensprofile von ihren Fahrern zu erstellen. Im folgenden Abschnitt werden einige Angriffsarten auf die Pseudonymität von CAMs näher beschrieben und analysiert. 
+Auch wenn CAMs keine primären Identifikationsmerkmale erhalten, existieren es mehrere Möglichkeiten, um mithilfe von CAMs Bewegungsprofile von Fahrzeugen zu erstellen. Dies kann zu diversen Risiken für die Privatsphäre führen, falls der Personenbezug von Fahrdaten hergestellt werden kann. Im folgenden Abschnitt werden einige Angriffsarten auf die Pseudonymität von CAMs näher beschrieben und analysiert. 
 
-Als erstes Beispiel sei ein so genannter "Big Brother Angreifer" angeführt, der eine Infrastruktur von Empfangseinrichtungen in einer georgraphischen Region betreibt und in der Lage ist, in diesem Gegend CAMs von Fahrzeugen zu erfassen und auszuwerten. Das wäre möglich, indem der Angreifer zum Beispiel eine Fahrzeug-Flotte aufstellt, die eingehende CAMs an einen zentralen Server übermittelt. Auch wenn vorbeifahrende Fahrzeuge ihr Pseudonym jede 10 Sekunden ändern würden, könnten sie mit solch einer Infrastruktur verfolgt werden \cite{Wiedersheim2010}. Da diese Art von Überwachung alle Fahrzeugdaten in der Gegend erfassen würde, könnte sie für breitere Verkehrsanalysen genutzt werden.
+Als erstes Beispiel sei ein sogenannter 'Big Brother Angreifer' angeführt, der eine Infrastruktur von Empfangseinrichtungen in einer geografischen Region betreibt und in der Lage ist, in dieser Gegend CAMs von Fahrzeugen zu erfassen und auszuwerten. Das wäre möglich, indem der Angreifer zum Beispiel eine Fahrzeug-Flotte aufstellt, die eingehende CAMs an einen zentralen Server übermittelt. Auch wenn vorbeifahrende Fahrzeuge ihr Pseudonym jede 10 Sekunden ändern würden, könnten sie mit solch einer Infrastruktur verfolgt werden \cite{Wiedersheim2010}. Da diese Art von Überwachung alle Fahrzeugdaten in der Gegend erfassen würde, könnte sie für breitere Verkehrsanalysen genutzt werden.
  
-Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahrzeugen aufzuzeichnen. Zum Beispiel kann man mithilfe eines Überwachungstool so genannte CAM-Traces erstellen, d.h. die gefahrene Strecke eines Fahrzeugs und alle von ihm auf dieser Strecke erstellten CAMs. Auch wenn das Fahrzeug regelmäßig seinen Signaturschlüssel wechselt, würde es reichen, nur eine CAM aus der CAM-Trace dem Fahrzeug eindeutig zuzuordnen, um die gesamte CAM-Trace diesem Fahrzeug zuzuordnen \cite{Kiometzis2017}. Es gibt eine Reihe von Methoden, um diese Zuordnung durchzuführen. In \cite{Ullmann2016} wurde dargelegt, dass sie aufgrund der sog. Secondary Vehicle Identifier erfolgen kann. Diese wird von diversen drahtlosen Schnittstellen im Auto zur Verfügung gestellt (z.B. eine Headunit, die eine öffentliche Bluetooth-Schnittstelle mit einem nutzerfreundlichen Namen besitzt). Die Secondary Vehicle Identifiers sind einfach zu erfassen und können einer eindeutigen Zuordnung der empfangenen CAM-Trace zum Fahrzeug dienen. 
+Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahrzeugen detailliert aufzuzeichnen. Zum Beispiel kann man mithilfe eines an das Fahrzeug befestigtes Überwachungstools sogenannte CAM-Traces erstellen, d.h. die gefahrene Strecke eines Fahrzeugs und alle von ihm auf dieser Strecke erstellten CAMs. Auch wenn das Fahrzeug regelmäßig seinen Signaturschlüssel wechselt, würde es reichen, nur eine CAM aus der CAM-Trace dem Fahrzeug eindeutig zuzuordnen, um die gesamte CAM-Trace diesem Fahrzeug zuzuordnen \cite{Kiometzis2017}. 
 
-
-
-z:B: nervöse Fahrer können von ruhigen unterschieden werden - \cite{Dettki2005}
-
-
-
-
-
-
-
-
-
-
-
-
+Es existiert eine Reihe von Methoden, um diese Zuordnung durchzuführen. In \cite{Ullmann2016} wurde dargelegt, dass sie aufgrund der sog. Secondary Vehicle Identifier erfolgen kann. Diese wird von diversen drahtlosen Schnittstellen im Auto zur Verfügung gestellt (z.B. eine Headunit, die eine öffentliche Bluetooth-Schnittstelle mit einem nutzerfreundlichen Namen besitzt). Die Secondary Vehicle Identifiers sind einfach zu erfassen und können einer eindeutigen Zuordnung der empfangenen CAM-Trace zum Fahrzeug dienen. 
 
 \section{Vereinbarkeit mit datenschutzrechtlichen Prinzipien}
 \label{ch:SecondContentSection}
@@ -102,7 +76,12 @@ Warum stellen IVS ein datenschutzrechtliches Problem dar? Ist DSGVO anwendbar?
 \subsection{Anwendbarkeit der DSGVO}
 \label{sec:SecondContentSection:SecondSubsection}
 
+
+z:B: nervöse Fahrer können von ruhigen unterschieden werden - \cite{Dettki2005}
+
 Art.6 Abs.1c DSGVO - Personenbezug Fahrdaten. Sind Fahrdaten personenbezogen, btw. können sie für eine eindeutige Identifizierung der Person benutzt werden?
+
+Herstellbarkeit des Personenbezugs \cite{Kiometzis2017}
 
 \cite{Weichert2016} - Datenschutzrechtliche Analyse der Car-2-Car-Communication, guter Ausgangspunkt.
 
