@@ -29,7 +29,7 @@
 % \thesistype{Seminar Thesis}
 
 %% Change the institute here, ``IPD'' is default
-% \myinstitute{Institute for \dots}
+\myinstitute{Zentrum für Angewandte Rechtswissenschaft (ZAR)}
 
 %% The advisors are PhD Students or Postdocs
 \advisor{Ref. iur. Leonie Sterz}
@@ -55,7 +55,14 @@
 \usepackage[citestyle=numeric,style=numeric,backend=biber]{biblatex}
 \addbibresource{seminar.bib}
 
-\setlength{\parskip}{0.8em}
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{*3}{*0}
+\titlespacing{\subsection}{0pt}{*3}{*0}
+\titlespacing{\subsubsection}{0pt}{*3}{*0}
+
+\setlength{\parskip}{0.7em}
+
+\usepackage{graphicx}
 
 %% ====================================
 %% ====================================
@@ -71,6 +78,8 @@
 
 %% Set the title
 \maketitle
+
+\listoffigures
 
 %% ----------------
 %% |   Abstract   |
