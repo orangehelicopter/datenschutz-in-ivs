@@ -13,15 +13,16 @@
 \section{Technische  Funktionsweise der C2C-Kommunikation}
 \label{ch:FirstContentSection}
 
-%% -------------------
-%% | Example content |
-%% -------------------
-Im folgenden Abschnitt wird die Funktionsweise der C2C-Kommunikation und die dafür benötigte Infrastruktur näher beschrieben. Der Nachrichtenaustausch zwischen Fahrzeugen beruht auf Public-Key Kryptografie, somit werden die Nachrichten mit einer Signatur und einem Zertifikat versehen, die von einer zentralen Stelle ausgegeben werden. Weiterhin wird auf die Nachrichtenformate der C2C-Kommunikation eingegangen, sowie auf die darin gespeicherten Daten, die möglicherweise für die Identifikation des Fahrzeugs benutzt werden können. Des Weiteren werden mögliche Angriffe auf die Pseudonymität der Nachrichten aufgeführt, aufgrund deren Bewegungsprofile von Fahrzeugen erstellt werden können.
+Im folgenden Abschnitt wird die Funktionsweise der C2C-Kommunikation und die dafür benötigte Infrastruktur näher beschrieben. Der Nachrichtenaustausch zwischen Fahrzeugen beruht auf Public-Key Kryptografie, somit werden die Nachrichten mit einer Signatur und einem Zertifikat versehen, die von einer zentralen Stelle ausgegeben werden. Eine kryptographische Signatur ist (analog zu einer Unterschrift) eine Bestätigung, dass die Nachricht tatsächlich von dem Versender stammt und nicht auf dem Weg verändert wurde. Der Empfänger kann dies überprüfen, in dem er die zentrale Stelle kontaktiert und eine Authentizität-Anfrage macht. Die Integrität der Nachricht kann er direkt durch die Signatur verifizieren. Allerdings werden die Nachrichten selbst nicht verschlüsselt und können von allen Verkehrsteilnehmern gelesen werden. Das heißt, dass alle darin enthaltenen Daten ebenfalls von jedem mitgelesen können, was zu datenschutzrechtlichen Problemen führen könnte. 
+
+Im Abschnitt \ref{sec:FirstContentSection:SecondSubSection} wird auf die Nachrichtenformate der C2C-Kommunikation eingegangen, sowie auf die darin gespeicherten Daten, die möglicherweise zur Identifikation des Fahrzeugs benutzt werden können. Dieses technische Thema bildet eine Grundlage für Herstellbarkeit des Personenbezugs aus den Fahrdaten, deren Möglichkeit in weiteren Kapiteln analysiert wird.
+
+Des Weiteren werden mögliche Angriffe auf die Pseudonymität der Nachrichten aufgeführt, aufgrund deren Bewegungsprofile von Fahrzeugen erstellt werden können. Aktuell ist die Infrastruktur so konstruiert, dass Fahrzeuge Nachrichten und Zertifikate pseudonym versenden, und keine Zuordnung von mehreren über einen längeren Zeitraum versendeten Nachrichten zu einem Fahrzeug technisch möglich ist. Allerdings gibt es andere Methoden, wodurch solch eine Zuordnung ohne Zustimmung des Fahrers realisiert werden kann, diese werden im Abschnitt \ref{sec:FirstContentSection:ThirdSubSection} beschrieben.
 
 \subsection{Public-Key Infrastruktur}
 \label{sec:FirstContentSection:FirstSubSection}
  
-Um den oben genannten Nachrichtenaustausch zu ermöglichen, braucht man eine entsprechende Public-Key Infrastruktur (PKI), die aus einer oder mehreren Certification Authorities (CAs) besteht. Die CAs sind in der Lage, digitale Zertifikate zu erstellen, diese Zertifikate der End-Entitäten zu erteilen und zu verifizieren. Als End-Entitäten fungieren ITS-Stationen (u.a. Fahrzeuge), die die erstellten Zertifikate für die Kommunikation untereinander verwenden und somit die Authentizität von einer Nachricht beweisen und überprüfen können  \cite{Strubbe2017}. 
+Um den oben genannten Nachrichtenaustausch zu ermöglichen, braucht man eine entsprechende Public-Key Infrastruktur (PKI), die aus einer oder mehreren Certification Authorities (CAs) besteht. Eine CA ist eine zentrale Stelle die in der Lage ist, digitale Zertifikate zu produzieren, diese Zertifikate den End-Entitäten zu erteilen und später ihre Authentizität zu verifizieren. Als End-Entitäten versteht man ITS-Stationen (u.a. Fahrzeuge), die die erstellten Zertifikate für die Kommunikation untereinander verwenden. Es gibt zwei Arten von Zertifikaten: ein langlebiges Enrolment Credential (EC) und ein kurzzeitgültiges Authorization Ticket (AT). Die Pseudonymität des Datenaustauschs wird durch ständigen Wechsel des ATs gewährleistet, womit die Nachricht signiert wird. Der EC wird hingegen nicht mit der Nachricht übertragen und ist nur den PKI Komponenten bekannt \cite{Strubbe2017}. 
 
 Die PKI wird aus drei Stufen zusammengesetzt \cite{SecurityCITS}: 
 \begin{itemize}
@@ -30,7 +31,7 @@ Die PKI wird aus drei Stufen zusammengesetzt \cite{SecurityCITS}:
 	\item End-Entitäten (EEs)
 \end{itemize}
 
-Darüber hinaus gibt es zwei Arten von Sub-CAs: Enrolment Authorities (EA) und Authorization Authorities (AA). Die EAs erstellen langlebige Zertifikate für EEs, die für die Authentifizierung innerhalb der PKI verwendet werden. Die AAs hingegen stellen kurzzeitige Zertifikate zur Verfügung, mit denen die EEs (z.B. Fahrzeuge) untereinander kommunizieren können ohne die Pseudonymität von einzelnen Entitäten zu verletzen. Der schematische Aufbau von einer PKI wird in der Abbildung \ref{fig:pki} verdeutlicht.
+Darüber hinaus gibt es zwei Arten von Sub-CAs: Enrolment Authorities (EA) und Authorization Authorities (AA). Die EAs erstellen langlebige Zertifikate für EEs, die für die Authentifizierung innerhalb der PKI verwendet werden (ECs). Die AAs hingegen stellen kurzzeitige Zertifikate zur Verfügung, mit denen die EEs (z.B. Fahrzeuge) untereinander kommunizieren können ohne die Pseudonymität von einzelnen Entitäten zu verletzen (ATs). Der schematische Aufbau von einer PKI wird in der Abbildung \ref{fig:pki} verdeutlicht.
 
 \begin{figure}
 	\centering
@@ -39,16 +40,15 @@ Darüber hinaus gibt es zwei Arten von Sub-CAs: Enrolment Authorities (EA) und A
 	\label{fig:pki}
 \end{figure}
 
-Bevor jegliche Kommunikation stattgefunden hat, muss sich die End-Entität zunächst bei der zugehörigen EA registrieren und ein Enrolment Credential erhalten, das mehrere Jahre gültig ist. Die EA bekommt dabei die Registrierungsinformationen von der EE, zum Beispiel ihre Fahrzeugidentifizierungsnummer und ihren öffentlichen Schlüssel. Die EE signiert den initialen Zertifikatsrequest mit ihrem eingebauten privaten Schlüssel und übermittelt ihn an die EA. Falls die Daten übereinstimmen, erhält die EE einen Enrolment Credential (EC).
+Bevor jegliche Kommunikation stattgefunden hat, muss sich die End-Entität zunächst bei der zugehörigen EA registrieren und ein Enrolment Credential (EC) erhalten, das mehrere Jahre gültig ist. Die EA bekommt dabei die Registrierungsinformationen von der EE, zum Beispiel ihre Fahrzeugidentifizierungsnummer und ihren öffentlichen Schlüssel. Diese Information wird verschlüsselt übermittelt und ist nicht öffentlich verfügbar. Die EE signiert den initialen Zertifikatsrequest mit ihrem eingebauten privaten Schlüssel und übermittelt ihn an die EA. Falls die Daten übereinstimmen, erhält die EE einen Enrolment Credential.
 
-Mit einem gültigen EC kann die EE weiterhin sogenannte Authorization Tickets (AT) bei der AA beantragen. ATs sind kurzzeitgültige Zertifikate für C2X Kommunikation, die oft gewechselt werden und somit der Senderpseudonymität dienen. Die Nachrichten sollten keinen eindeutigen Identifikator erhalten, damit kein Personenbezug hergestellt werden kann. Daher werden CAMs und DENMs mit ATs signiert und nicht mit den langlebigen ETs, die für eine EE über mehrere Jahre gültig ist. 
+Mit einem validen EC kann die EE weiterhin kurzzeitgültige Authorization Tickets (AT) bei der AA beantragen. ATs sind wie vorhin beschrieben kurzzeitgültige Zertifikate für C2X Kommunikation, die oft gewechselt werden und somit der Senderpseudonymität dienen. Die Nachrichten sollten keinen eindeutigen Identifikator erhalten, damit kein Personenbezug hergestellt werden kann. Daher werden sie mit ATs signiert und nicht mit den langlebigen ETs, die für ein Fahrzeug über mehrere Jahre gültig ist. 
 
-Ein AT wird von einer Entität bei der AA beantragt. Die Anfrage an die AA enthält unter anderem verschlüsselte Daten, die nur von der entsprechenden EA ausgelesen werden können \cite{ETSI2018}, darunter die EC von der Entität. Die EA bestätigt die Authentizität der Daten mit dem angehängten EC und schickt eine Statusmeldung an die AA, ohne diese zusätzliche Information preiszugeben. Es ist wichtig, die EA und AA organisatorisch getrennt zu halten, da sonst bei der AT-Anfrage eine Zuordnung zu der End-Entität bzw. ihrem EC möglich wäre.
+Ein AT wird von einer Entität bei der AA beantragt. Die Anfrage an die AA enthält unter anderem verschlüsselte Daten, die nur von der entsprechenden EA ausgelesen werden können \cite{ETSI2018}, darunter das langlebige EC von der Entität. Eine AA kann diese Daten nicht auslesen, da sie verschlüsselt sind, also leitet sie diesen Teil der Anfrage an die zugehörige EA. Die EA entschlüsselt die Daten, bestätigt die Authentizität der EE mit dem angehängten EC und schickt eine Statusmeldung an die AA, ohne diese zusätzliche Information preiszugeben. Es ist wichtig, die EA und AA organisatorisch getrennt zu halten, da sonst bei der AT-Anfrage eine Zuordnung zu der End-Entität bzw. ihrem EC möglich wäre.
 
+Nachdem die mit dem AT signierte Nachricht erfolgreich an die empfangende EE übermittelt wurde, nutzt sie den AT um die Nachricht zu verifizieren. Dies erfolgt mittels einer Kettenprüfung durch die AA und die  entsprechende Root-CA, wodurch die Authentizität der Nachricht festgestellt wird.
 
-Nachdem die mit dem AT signierte Nachricht erfolgreich an die empfangende EE übermittelt wurde, nutzt sie den AT um die Nachricht zu verifizieren. Dies erfolgt mittels einer Kettenprüfung durch die AA und das entsprechende Root-Zertifikat, wodurch die Authentizität der Nachricht festgestellt wird.
-
-In Europa ist zusätzlich zu der oben beschriebenen PKI eine globale Vertrauensliste vorgesehen, die innerhalb der europäischen Grenzen alle vertrauenswürdige Root-CA-Zertifikate beinhaltet. Diese wird von einem zentralen Trust List Manager (TLM) erstellt und elektronisch signiert. Somit wird die Interoperabilität von europäischen PKIs über Grenzen sichergestellt. Darüber hinaus ist es wichtig, die nicht mehr vertrauenswürdigen Zertifikate zurückziehen zu können - dies wird durch sogenannte Certificate Revocation Lists (CRL) sichergestellt. Diese werden allen PKI-Teilnehmern von der jeweiligen Root-CA zur Verfügung gestellt und enthalten die Liste mit allen revozierten Zertifikaten.  
+In Europa ist zusätzlich zu der oben beschriebenen PKI eine globale Vertrauensliste vorgesehen, die innerhalb der europäischen Grenzen alle vertrauenswürdige Root-CA-Zertifikate beinhaltet. Diese wird von einem zentralen Trust List Manager (TLM) erstellt und elektronisch signiert. Somit wird die Interoperabilität von europäischen PKIs über Grenzen sichergestellt, was durch die IVS-RL vorgeschrieben wird\footnote{\emph{Jochum}, ZD 2020, 497}. Darüber hinaus ist es wichtig, die nicht mehr vertrauenswürdigen Zertifikate zurückziehen zu können - dies wird durch sogenannte Certificate Revocation Lists (CRL) sichergestellt. Diese werden allen PKI-Teilnehmern von der jeweiligen Root-CA zur Verfügung gestellt und enthalten die Liste mit allen revozierten Zertifikaten.  
 
 \subsection{Nachrichtenformate}
 \label{sec:FirstContentSection:SecondSubSection}
@@ -80,16 +80,16 @@ Im Weiteren wird nur die CAM betrachtet, da die DENM keine personenbezogenen Dat
 \subsection{Angriffsmöglichkeiten}
 \label{sec:FirstContentSection:ThirdSubSection}
 
-Auch wenn CAMs keine primären Identifikationsmerkmale erhalten, existieren es mehrere Möglichkeiten, um mithilfe von CAMs Bewegungsprofile von Fahrzeugen zu erstellen. Dies kann zu diversen Risiken für die Privatsphäre führen, falls der Personenbezug von Fahrdaten hergestellt werden kann. Im folgenden Abschnitt werden einige Angriffsarten auf die Pseudonymität von CAMs näher beschrieben und analysiert. 
+Auch wenn CAMs keine primären Identifikationsmerkmale erhalten, existieren es mehrere Möglichkeiten, um mehere CAMs von einem Fahrzeug miteinander zu verbinden und damit ein Bewegungsprofil von diesem Fahrzeug zu erstellen. Dies kann zu diversen Risiken für die Privatsphäre führen, falls der Personenbezug von diesen Fahrdaten hergestellt werden kann, da der gesamte Fahrweg einer Person offengelegt wird. Im folgenden Abschnitt werden einige Angriffsarten auf die Pseudonymität von CAMs näher beschrieben und analysiert. 
 
-Als erstes Beispiel sei ein sogenannter 'Big Brother Angreifer' angeführt, der eine Infrastruktur von Empfangseinrichtungen in einer geografischen Region betreibt und in der Lage ist, in dieser Gegend CAMs von Fahrzeugen zu erfassen und auszuwerten. Das wäre möglich, indem der Angreifer zum Beispiel eine Fahrzeug-Flotte aufstellt, die eingehende CAMs an einen zentralen Server übermittelt. Auch wenn vorbeifahrende Fahrzeuge ihr Pseudonym jede 10 Sekunden ändern würden, könnten sie mit solch einer Infrastruktur verfolgt werden \cite{Wiedersheim2010}. Da diese Art von Überwachung alle Fahrzeugdaten in der Gegend erfassen würde, könnte sie für breitere Verkehrsanalysen genutzt werden.
+Als erstes Beispiel sei ein sogenannter 'Big Brother Angreifer' angeführt, der eine Infrastruktur von Empfangseinrichtungen in einer geografischen Region betreibt und in der Lage ist, in dieser Gegend CAMs von Fahrzeugen zu erfassen und auszuwerten. Das wäre möglich, indem der Angreifer zum Beispiel eine Fahrzeug-Flotte aufstellt, die eingehende CAMs an einen zentralen Server übermittelt. Auch wenn vorbeifahrende Fahrzeuge ihr Pseudonym jede zehn Sekunden ändern würden, könnten sie mit solch einer Infrastruktur verfolgt werden \cite{Wiedersheim2010}. Da diese Art von Überwachung alle Fahrzeugdaten in der Gegend erfassen würde, könnte sie für breitere Verkehrsanalysen genutzt werden.
  
-Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahrzeugen detailliert aufzuzeichnen. Zum Beispiel kann man mithilfe eines an das Fahrzeug befestigtes Überwachungstools sogenannte CAM-Traces erstellen, d.h. die gefahrene Strecke eines Fahrzeugs und alle von ihm auf dieser Strecke erstellten CAMs. Auch wenn das Fahrzeug regelmäßig seinen Signaturschlüssel wechselt, würde es reichen, nur eine CAM aus der CAM-Trace dem Fahrzeug eindeutig zuzuordnen, um die gesamte CAM-Trace diesem Fahrzeug zuzuordnen \cite{Kiometzis2017}. 
+Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahrzeugen detailliert aufzuzeichnen. Zum Beispiel kann man mithilfe eines sich mit dem Fahrzeug bewegendes Überwachungstools sogenannte CAM-Traces erstellen, d.h. die gefahrene Strecke eines Fahrzeugs und alle von ihm auf dieser Strecke erstellten CAMs. Auch wenn das Fahrzeug regelmäßig seinen Signaturschlüssel wechselt, würde es reichen, nur eine CAM aus der CAM-Trace dem Fahrzeug eindeutig zuzuordnen, um die gesamte CAM-Trace diesem Fahrzeug zuzuordnen \cite{Kiometzis2017}. 
 
-Es existiert eine Reihe von Methoden, um diese Zuordnung durchzuführen. In \cite{Ullmann2016} wurde dargelegt, dass sie aufgrund der sog. Secondary Vehicle Identifier erfolgen kann. Diese wird von diversen drahtlosen Schnittstellen im Auto zur Verfügung gestellt (z.B. eine Headunit, die eine öffentliche Bluetooth-Schnittstelle mit einem nutzerfreundlichen Namen besitzt). Die Secondary Vehicle Identifiers sind einfach zu erfassen und können einer eindeutigen Zuordnung der empfangenen CAM-Trace zum Fahrzeug dienen. 
+Es existiert eine Reihe von Methoden, um diese Zuordnung technisch durchzuführen. In \cite{Ullmann2016} wurde dargelegt, dass sie aufgrund der sog. Secondary Vehicle Identifier erfolgen kann. Diese wird von diversen drahtlosen Schnittstellen im Auto zur Verfügung gestellt (z.B. eine Headunit, die eine öffentliche Bluetooth-Schnittstelle mit einem nutzerfreundlichen Namen besitzt). Die Secondary Vehicle Identifiers sind einfach zu erfassen und können einer eindeutigen Zuordnung der empfangenen CAM-Trace zum Fahrzeug dienen. 
 
 
-
+...andere Möglichkeiten?
 
 
 \section{Vereinbarkeit mit datenschutzrechtlichen Prinzipien}
@@ -118,9 +118,11 @@ Somit ist es grundsätzlich möglich, aus einem flächendeckenden Datenbestand a
 \subsubsection{Herstellbarkeit Personenbezug}
 \label{sec:SecondContentSection:SecondSubsection:SecondSubSubsection}
 
-Der Gegenstand von DSGVO sind personenbezogene Daten. Selbst wenn CAMs direkt keine primären Identifikationsmerkmale enthalten, kann deren Personenbezug grundsätzlich mit Zusatzwissen hergestellt werden. Technisch kann das durch eine Auflösung des Pseudonyms bei einem sogenannten Pseudonym Provider erfolgen \cite{Kiometzis2017}, aber auch durch andere Wege. Zum Beispiel, kann man anhand einer CAM-Trace aufgrund der am meisten gefahrenen Strecken den Wohn- und Arbeitsort einer Person identifizieren. Außerdem wäre es zum Beispiel möglich, durch Datenanalyse die Outliers in der Menge von den aufgezeichneten CAM-Traces identifizieren und versuchen, sie auf Personen mit entsprechendem Tagesablauf zurückzuführen. Besonders in wenig befahrenen Gebieten wäre diese Technik erfolgreich. Letztendlich wäre in vielen Situationen der einfachste Weg, vor Ort das Fahrzeug zu identifizieren (z.B. durch aufgezeichnete Videos oder Zeugenaussagen), und später aus dem Datenbestand die entsprechende CAM-Trace auszusuchen. Alle oben ausgeführten Techniken voraussetzen natürlich eine umfassende Erfassung von Fahrdaten und einen vorhandenen Bestand von Bewegungsprofilen (z.B. den in Kapitel \ref{sec:FirstContentSection:ThirdSubSection} beschriebenen Big Brother Angreifer).
+Nach Art. 4 Nr. 1 DSGVO sind personenbezogene Daten alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. Selbst wenn CAMs direkt keine primären Identifikationsmerkmale enthalten (z.B. die Fahrzeugidentifizierungsnummer), kann deren Personenbezug grundsätzlich mit Zusatzwissen hergestellt werden. Technisch kann das durch eine Auflösung des Pseudonyms bei einem sogenannten Pseudonym Provider erfolgen \cite{Kiometzis2017}, aber auch durch andere Wege. Zum Beispiel, kann man anhand einer CAM-Trace aufgrund der am meisten gefahrenen Strecken den Wohn- und Arbeitsort einer Person identifizieren. Außerdem wäre es zum Beispiel möglich, durch Datenanalyse die Outliers in der Menge von den aufgezeichneten CAM-Traces identifizieren und versuchen, sie auf Personen mit entsprechendem Tagesablauf zurückzuführen. Besonders in wenig befahrenen Gebieten wäre diese Technik erfolgreich. Letztendlich wäre in vielen Situationen der einfachste Weg, vor Ort das Fahrzeug zu identifizieren (z.B. durch aufgezeichnete Videos oder Zeugenaussagen), und später aus dem Datenbestand die entsprechende CAM-Trace auszusuchen. Alle oben ausgeführten Techniken voraussetzen natürlich eine umfassende Erfassung von Fahrdaten und einen vorhandenen Bestand von Bewegungsprofilen (z.B. den in Kapitel \ref{sec:FirstContentSection:ThirdSubSection} beschriebenen Big Brother Angreifer).
 
 Eine besondere Sensibilität allein aus der Art der Daten wird nach Art. 9 EU-DSGVO nicht begründet \cite{Weichert2016}.
+
+Für die datenschutzrechtliche Betrachtung genügt bereits die abstrakte rechtliche Möglichkeit der Informationsverknüpfung, weshalb die Identifizierbarkeit des Fahrzeughalters unabhängig davon zu bejahen ist, ob die – ohnehin niederschwelligen – Voraussetzungen des Auskunftsanspruchs im konkreten Einzelfall tatsächlich erfüllt sind. ..... Sind im Kfz erhobene Daten mit dem Kennzeichen oder der Fahrzeug-Identifizierungsnummer verknüpft, ist jedenfalls im Hinblick auf den Fahrzeughalter von personenbezogenen Daten auszugehen ....... Diese Zuordnung mag freilich künftig zu überdenken sein, wenn sich Shared Mobility-Konzepte durchsetzen sollten, aufgrund derer die Nutzer von der Anschaffung eigener Fahrzeuge absehen und ihren Mobilitätsbedarf durch kurzzeitige Anmietung von Fahrzeugen gewerblicher Flottenbetreiber decken. \footnote{\emph{Specht/Mantz}, Handbuch Europäisches und deutsches Datenschutzrecht, 1. Aufl.,  2019, Rn. 12, 13}
 
 \cite{Weichert2016} - Datenschutzrechtliche Analyse der Car-2-Car-Communication, guter Ausgangspunkt.
 
@@ -136,12 +138,32 @@ Art.20 DSGVO - "Recht auf Datenübertragbarkeit"
 
 \cite{Straub2018} - Analyse der Datenübertragbarkeit, Begründung der DSGVO-Anwendbarkeit
 
+Art. 20 Abs. 1 DS-GVO gilt nur, wenn die personenbezogenen Daten vom Betroffenen bereitgestellt wurden
+
+Separate section: wo werden Daten gesammelt? Wer sammelt Daten? 
+-> MDM (Jochum)
+
+Wer ist an den Daten interessiert? - Klink-Straub/Straub: Vernetzte Fahrzeuge – portable Daten (ZD 2018, 459) 460
+
+
 \subsection{Datenschutzmaßnahmen}
+
+Offene Fragen: welche Daten wo gesammelt wo gespeichert, wie erfassen? Wie Missbrauch vermeiden?
+
+Dies entspricht den Vorgaben des Art. 10 IVS-RL. Die Richtlinie fordert, dass die Mitgliedstaaten sicherstellen, dass personenbezogene Daten gegen Missbrauch, d.h. insbesondere unrechtmäßigen Zugriff, Veränderung oder Verlust, geschützt und weitestgehend anonymisierte Daten für den Be- trieb von IVS-Anwendungen und -Diensten vorgesehen werden. In der Praxis bedeutet das, dass die Vorgaben der DS-GVO einzuhalten sind. 
+
+Damit enthalten die delegierten Verordnungen grundsätzliche Verpflichtungen zur Zurverfügungstel- lung bestimmter Daten ab einem bestimmten Zeitpunkt in bestimmten Formaten. Nicht geregelt ist allerdings, wer diese Daten einsammelt. Außerdem ergibt sich daraus nicht, ob die entsprechenden Adressaten diese Daten auch systematisch und vollständig sammeln und digitalisieren müssen. Bereitstellung von Daten auf Anforderung bedeutet jedenfalls nicht, diese Daten aktiv zu erheben und zu digitalisieren. Die delegierten Verordnungen verweisen i.Ü. nur auf den nationalen Sammelpunkt. Zwar macht das Unionsrecht formelle und materielle Vorgaben auch für die Weiterverwendung der Daten, wonach die Mitgliedstaaten vor allem sicherzustellen haben, dass bei der Verarbeitung per- sonenbezogener Daten die Grundrechte, die Grundfreiheiten und die Privatsphäre zu achten sind und jeglicher Missbrauch vermieden werden muss, vgl. Art. 10 IVS-RL. Außerdem fallen die Daten auch in den Anwendungsbereich der RL 2019/1024 v. 20.7.2019 über offene Daten und die Weiterver-
+Jochum: Verkehrsdaten für intelligente Verkehrssysteme (ZD 2020, 497) 500
+wendung von Informationen des öffentlichen Sektors (vgl. Art. 1 Abs. 4 RL 2019/1024), weswegen die digitale Datenverarbeitung unter einem besonderen persönlichkeitsrechtlichen Schutz steht und damit im datenschutzrechtlich relevanten Bereich liegt.
+- Jochum: Verkehrsdaten für intelligente Verkehrssysteme ZD 2020, 499
+
 Das schutzwürdige Interesse an der Vermeidung von Bewegungsprofilen besteht in jedem Fall; eine individualisierte Zweitnutzung setzt deshalb eine explizite Einwilligung voraus. (zweitnutzung - begehrlichkeit!)- \cite{Weichert2016}
 
 \cite{Seewald2018} - alle o.g. Datenschutzmaßnahmen + "obligation to report a data breach, to conduct a data protection impact assessment". "analytical progress of AI". Guter Ausgangspunkt für Kapitel \ref{sec:SecondContentSection:SecondSubsection}
 
 Die in \cite{Kiometzis2017} aufgeführten Empfehlungen untersuchen und analysieren. 
+
+unentgeltlich
 
 %Add additional content sections if required by adding new .tex files in the
 %\code{sections/} directory and adding an appropriate 
