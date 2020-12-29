@@ -89,7 +89,7 @@ Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahr
 Es existiert eine Reihe von Methoden, um diese Zuordnung technisch durchzuführen. In \cite{Ullmann2016} wurde dargelegt, dass sie aufgrund der sog. Secondary Vehicle Identifier erfolgen kann. Diese wird von diversen drahtlosen Schnittstellen im Auto zur Verfügung gestellt (z.B. eine Headunit, die eine öffentliche Bluetooth-Schnittstelle mit einem nutzerfreundlichen Namen besitzt). Die Secondary Vehicle Identifiers sind einfach zu erfassen und können einer eindeutigen Zuordnung der empfangenen CAM-Trace zum Fahrzeug dienen. 
 
 
-...andere Möglichkeiten?
+(...andere Möglichkeiten?)
 
 
 \section{Vereinbarkeit mit datenschutzrechtlichen Prinzipien}
@@ -98,15 +98,16 @@ Es existiert eine Reihe von Methoden, um diese Zuordnung technisch durchzuführe
 Die Datenschutzgrundverordnung (DSGVO) ist eine Verordnung, mit der die Regeln zur Verarbeitung personenbezogener Daten in der Europäischen Union vereinheitlicht werden. Sie ist am 25. Mai 2018 inkraft getreten und hat zu dem Zeitpunkt geltende Richtlinie 95/46/EG zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten und zum freien Datenverkehr ersetzt. 
 
 In diesem Abschnitt wird diskutiert, ob die Erhebung von Fahrdaten in einer PKI ein datenschutzrechtliches Problem darstellt, und geprüft, ob die DSGVO in diesem Fall anwendbar ist. Dafür werden einige Verfahren vorgestellt, mithilfe von denen ein Bewegungsprofil und deren Personenbezug aus den Fahrdaten hergestellt werden kann. Darüber hinaus 
+Zum Schluss werden die Datenschutzmaßnahmen und offene Fragen beschrieben, die bei der Einführung einer C-ITS beachtet werden müssen. 
 
 Warum stellen IVS ein datenschutzrechtliches Problem dar? Ist DSGVO anwendbar? 
 
-(Beispiel von rechtlicher Probl	emstellung und Richtlinien zu deren Lösung - \cite{EUCooperativeV2X} ) - wird wahrscheinlich nicht behandelt oder kurz erwähnt, da wir uns auf DSGVO konzentrieren
+(Beispiel von rechtlicher Problemstellung und Richtlinien zu deren Lösung - \cite{EUCooperativeV2X} ) - wird wahrscheinlich nicht behandelt oder kurz erwähnt, da wir uns auf DSGVO konzentrieren
 
 \subsection{Anwendbarkeit der DSGVO}
 \label{sec:SecondContentSection:SecondSubsection}
 
-Zunächst wird die Anwendbarkeit der DSGVO auf die in CAMs erhaltene Fahrdaten diskutiert. Falls diese Daten personenbezogen sind, beziehungsweise für eine eindeutige Identifizierung der Person benutzt werden können, fällt ihre Verarbeitung unter DSGVO und somit sind sämtliche Grundsätze anwendbar, wie zum Beispiel Grundsatz der Datenminimierung und Grundsatz der Integrität und Vertraulichkeit. 
+Zunächst wird die Anwendbarkeit der DSGVO auf die in CAMs erhaltene Fahrdaten diskutiert. Falls diese Daten personenbezogen sind, beziehungsweise für eine eindeutige Identifizierung der Person benutzt werden können, fällt ihre Verarbeitung unter DSGVO. In diesem Abschnitt wird die Anwendbarkeit der DSGVO festgestellt und anschließend die Artikel angeführt, die für CAM Fahrdaten besonders relevant sind. 
 
 \subsubsection{Bewegungsprofile und Verhaltensprofile}
 \label{sec:SecondContentSection:SecondSubsection:FirstSubSubsection}
@@ -118,21 +119,28 @@ Somit ist es grundsätzlich möglich, aus einem flächendeckenden Datenbestand a
 \subsubsection{Herstellbarkeit Personenbezug}
 \label{sec:SecondContentSection:SecondSubsection:SecondSubSubsection}
 
-Nach Art. 4 Nr. 1 DSGVO sind personenbezogene Daten alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. Selbst wenn CAMs direkt keine primären Identifikationsmerkmale enthalten (z.B. die Fahrzeugidentifizierungsnummer), kann deren Personenbezug grundsätzlich mit Zusatzwissen hergestellt werden. Technisch kann das durch eine Auflösung des Pseudonyms bei einem sogenannten Pseudonym Provider erfolgen \cite{Kiometzis2017}, aber auch durch andere Wege. Zum Beispiel, kann man anhand einer CAM-Trace aufgrund der am meisten gefahrenen Strecken den Wohn- und Arbeitsort einer Person identifizieren. Außerdem wäre es zum Beispiel möglich, durch Datenanalyse die Outliers in der Menge von den aufgezeichneten CAM-Traces identifizieren und versuchen, sie auf Personen mit entsprechendem Tagesablauf zurückzuführen. Besonders in wenig befahrenen Gebieten wäre diese Technik erfolgreich. Letztendlich wäre in vielen Situationen der einfachste Weg, vor Ort das Fahrzeug zu identifizieren (z.B. durch aufgezeichnete Videos oder Zeugenaussagen), und später aus dem Datenbestand die entsprechende CAM-Trace auszusuchen. Alle oben ausgeführten Techniken voraussetzen natürlich eine umfassende Erfassung von Fahrdaten und einen vorhandenen Bestand von Bewegungsprofilen (z.B. den in Kapitel \ref{sec:FirstContentSection:ThirdSubSection} beschriebenen Big Brother Angreifer).
+Nach Art. 4 Nr. 1 DSGVO sind personenbezogene Daten alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. Selbst wenn CAMs direkt keine primären Identifikationsmerkmale enthalten (z.B. die Fahrzeugidentifizierungsnummer), kann deren Personenbezug grundsätzlich mit Zusatzwissen hergestellt werden. Technisch kann das durch eine Auflösung des Pseudonyms bei einem sogenannten Pseudonym Provider erfolgen \cite{Kiometzis2017}, aber auch durch andere Wege. Zum Beispiel kann man anhand einer CAM-Trace aufgrund der am meisten gefahrenen Strecken den Wohn- und Arbeitsort einer Person identifizieren. Außerdem wäre es zum Beispiel möglich, durch Datenanalyse die Outliers in der Menge von den aufgezeichneten CAM-Traces identifizieren und versuchen, sie auf Personen mit entsprechendem Tagesablauf zurückzuführen. Besonders in wenig befahrenen Gebieten wäre diese Technik erfolgreich. Letztendlich wäre in vielen Situationen der einfachste Weg, vor Ort das Fahrzeug zu identifizieren (z.B. durch aufgezeichnete Videos oder Zeugenaussagen), und später aus dem Datenbestand die entsprechende CAM-Trace auszusuchen. Alle oben ausgeführten Techniken voraussetzen natürlich eine umfassende Erfassung von Fahrdaten und einen vorhandenen Bestand von Bewegungsprofilen (z.B. den in Kapitel \ref{sec:FirstContentSection:ThirdSubSection} beschriebenen Big Brother Angreifer).
 
-Eine besondere Sensibilität allein aus der Art der Daten wird nach Art. 9 EU-DSGVO nicht begründet \cite{Weichert2016}.
+Eine besondere Sensibilität allein aus der Art der Daten einer CAM wird nach Art. 9 EU-DSGVO nicht begründet \cite{Weichert2016}. Allerdings genügt für die datenschutzrechtliche Betrachtung bereits die abstrakte rechtliche Möglichkeit der Informationsverknüpfung. Das heißt: falls es technisch möglich ist, den Fahrzeughalter aus den Daten zu identifizieren, fällt die Erhebung von CAMs unter die DSGVO - unabhängig davon, ob die Voraussetzungen dafür tatsächlich erfüllt sind  \footnote{\emph{Specht/Mantz}, Handbuch Europäisches und deutsches Datenschutzrecht, 1. Aufl.,  2019, Rn. 12, 13}. Dies könnte sich zukünftig mit der Einsetzung von Shared Mobility-Konzepten ändern, falls man überwiegend nur kurzzeitig ein Fahrzeug anmietet und die Fahrzeugnummer nicht mehr auf natürliche Personen zurückgeführt werden kann. 
 
-Für die datenschutzrechtliche Betrachtung genügt bereits die abstrakte rechtliche Möglichkeit der Informationsverknüpfung, weshalb die Identifizierbarkeit des Fahrzeughalters unabhängig davon zu bejahen ist, ob die – ohnehin niederschwelligen – Voraussetzungen des Auskunftsanspruchs im konkreten Einzelfall tatsächlich erfüllt sind. ..... Sind im Kfz erhobene Daten mit dem Kennzeichen oder der Fahrzeug-Identifizierungsnummer verknüpft, ist jedenfalls im Hinblick auf den Fahrzeughalter von personenbezogenen Daten auszugehen ....... Diese Zuordnung mag freilich künftig zu überdenken sein, wenn sich Shared Mobility-Konzepte durchsetzen sollten, aufgrund derer die Nutzer von der Anschaffung eigener Fahrzeuge absehen und ihren Mobilitätsbedarf durch kurzzeitige Anmietung von Fahrzeugen gewerblicher Flottenbetreiber decken. \footnote{\emph{Specht/Mantz}, Handbuch Europäisches und deutsches Datenschutzrecht, 1. Aufl.,  2019, Rn. 12, 13}
-
+--- 
 \cite{Weichert2016} - Datenschutzrechtliche Analyse der Car-2-Car-Communication, guter Ausgangspunkt.
 
-\subsection{Grundsatz der Datenminimierung}
+\subsubsection{Grundsatz der Datenminimierung}
+
+
 
 Art.5 Abs.1c DSGVO - "Datenminimierung". 
 
 Geeignete Pseudonymisierung
 
-\subsection{Recht auf Datenübertragbarkeit}
+...maybe make those subsubsections subsections instead?
+
+\subsubsection{Grundsatz der Integrität und Vertraulichkeit}
+
+
+
+\subsubsection{Recht auf Datenübertragbarkeit}
 
 Art.20 DSGVO - "Recht auf Datenübertragbarkeit"
 
