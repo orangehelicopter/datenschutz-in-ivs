@@ -29,24 +29,60 @@ Anschließend wird auf die Herstellbarkeit des Personenbezugs eingegangen, da si
 \section{Hintergrund}
 \label{ch:Citation}
 
-IVS-RL unbedingt einführen!!!
+Bereits seit etwa Mitte der 2000er existieren einige technischen Lösungen für die Nahbereichskommunikation zwischen Fahrzeugen und ggf. Infrastrukturkomponenten. Zum Beispiel, die IEEE 802.11p ist eine WLAN-Variante, die aktuell in Europa als Funkstandard für Kooperative Intelligente Verkehrssysteme (C-ITS) gilt. Weiterhin existieren mehrere Spezifikationen des ETSI (Europäisches Institut für Telekommunikationsnormen), die unter anderem Nachrichtenformate festlegen \cite{Strubbe2017}. 
 
-Begriff C-ITS - \cite{CITS2016}, andere Begriffe einführen.
+Das Ziel der C-ITS ist es vor allem, den Verkehrsfluss zu verbessern und Unfälle vorzubeugen. Die Autofahrer sollen so früh wie möglich vor Gefahren auf der Fahrstrecke gewarnt werden, selbst wenn diese noch nicht im Sichtbereich sind. So können sie entsprechend reagieren und ihr Fahrverhalten frühzeitig anpassen, um Staus oder sogar zusätzliche Unfälle zu vermeiden. Als ein Beispiel im C-ITS Kontext kann man Sonderfahrzeuge nehmen (z.B. Kranken- oder Feuerwerhwagen) - diese sollten eine sogenannte "Blaulichtnachricht" versenden und somit andere Fahrzeuge darauf hinweisen, dass sie eine Rettungsgasse bilden sollten. Die C2X-Nachrichten auf Basis von 802.11p haben eine Reichweite von bis zu 800 Metern, was herkömmliche Sirenen von z.B. Krankenwagen weit übersteigt, besonders in dicht bewohnten Stadtgebieten.
 
-Initiativen in Deutschland und EU, Geschichte und Entwicklung
+Die EU hat bereits vor zehn Jahren eine Rechtsgrundlage für intelligente Verkehrssysteme geschaffen. Es handelt sich um die RL 2010/40/EU zum Rahmen für die Einführung intelligenter Verkehrssysteme im Straßenverkehr und für deren Schnittstellen zu anderen Verkehrsträgern (IVS-RL) \footnote{Jochum: Verkehrsdaten für intelligente Verkehrssysteme ZD 2020, 497}. In November 2016 wurde von der Europäischen Kommission eine Strategie für Kooperative Intelligente Verkehrssysteme geschaffen \cite{CITS2016}, mit der ein praktisches Rahmen für eine Einführung von C-ITS in Europa definiert wurde. 
 
-Car-2-Car Communication Consortium - \cite{Car2Car}
+Die Initiativen zur Standardisierung der C2X-Kommunikation liegen jedoch weiter in der Vergangenheit. Bereits in 2002 wurde der Car-2-Car Communication Consortium gegründet (C2C-CC)  \cite{Car2Car}, dem die meisten Fahrzeughersteller und große Zulieferer beigetreten sind. Das Ziel davon ist es, die C2C-Kommunikation zu standardisieren und den Rollout im europäischen Markt voranzutreiben. In 2019 wurde ein wichtiger Meilenstein auf diesem Weg erreicht, da die ersten Fahrzeuge mit kooperativer C2X für den Markt frei verfügbar gemacht wurden. Hier geht es um sogenanntes Day-1 Enrolment, den ersten Schritt auf der Roadmap von C-ITS. Die drei Phasen davon werden in der Tabelle \ref{table:1} näher beschrieben.
 
-Related work - Literatur, die sich mit der Fragenstellung beschäftigt - z.B. \cite{Jochum2020}
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|m{4em}|m{10em}|m{10em}|m{8em}|} 
+		\hline
+		& Day 1 & Day 2 & Day 3 \\ [1ex]
+		\hline
+		Fokus & Awareness driving & Sensing driving & Cooperative driving \\ [1ex]
+		\hline 
+		Beispiele & \begin{itemize}[leftmargin=0.3cm] \item Warnung vor langsamen oder stehenden Fahrzeugen
+		
+		\item Warnung vor Straßenarbeiten
+		
+		\item Warnung vor sich nähernden Einsatzfahrzeugen
+		
+		\item Anzeige von Verkehrszeichen im Fahrzeug
+		
+		\item Anzeige Missachtung von Verkehrsampeln / Sicherheit auf Kreuzungen 
+		
+	\end{itemize} & 
+	\begin{itemize}[leftmargin=0.3cm] \item Überholwarnung
+	
+	\item Erweiterte Sicherheit auf Kreuzungen 
+	
+	\item Kooperative adaptive Geschwindigkeitsregelung
+	
+	\item Warnung vor langfristigen Straßenarbeiten
+	
+	\item Spezielle Fahrzeugpriorisierung
+	
+	\end{itemize} & 
+	\begin{itemize}[leftmargin=0.3cm] \item Kooperatives Überholen
+	
+	\item Kooperativer Spurwechsel
+	
+	\item Platooning
+	
+	\end{itemize} \\ 
+		\hline
+	\end{tabular}
+	\caption{Phasen der Einführung von C-ITS-Diensten nach \cite{Car2Car}}
+	\label{table:1}
+\end{table}
 
-Die EU hat bereits vor zehn Jahren eine Rechtsgrundlage für intelligente Verkehrssysteme geschaf- fen. Es handelt sich um die RL 2010/40/EU v. 7.7.2010 zum Rahmen für die Einführung intelligenter Verkehrssysteme im Straßenverkehr und für deren Schnittstellen zu anderen Verkehrsträgern (IVS-
-2
-RL). 
+Auf Ersuchen der Europäischen Kommission wurde eine Studie durchgeführt, in welcher die Kosten und den Nutzen der durch C-ITS unterstützten Dienste für den Straßenverkehr in den Mitgliedstaaten untersucht wurde \cite{StudyDeployment}. Im Ergebnis wurde erwiesen, dass bei einer europaweiten Einführung von Day 1 C-ITS-Diensten im Zeitraum 2018 bis 2030 das Nutzen-Kosten-Verhältnis bis zu 3:1 betragen wird (falls die Interoperabilität zwischen den Mitgliedsstaaten sichergestellt wird). Dies bedeutet, dass jeder in die für den Day 1 vereinbarten C-ITS-Dienste investierte Euro einen Nutzen von bis zu drei Euro generieren dürfte. 
 
-Die Bundesrepublik Deutschland hat hinsichtlich der Umsetzung der IVS-RL und der Ausfüllung der delegierten Verordnungen die föderale Struktur zu beachten. Die Umsetzung der Richtlinie erfolgte
-17 18
-2013 durch das Gesetz über Intelligente Verkehrssysteme im Straßenverkehr , welches 2017 geändert wurde, um den Anforderungen der delegierten Verordnungen zu genügen.
-- Jochum: Verkehrsdaten für intelligente Verkehrssysteme ZD 2020, 497
+Wie oben erwähnt, wurden die Day 1 Dienste bereits eingesetzt und sind im europäischen Markt verfügbar. Der Einsatz von Day 2 und Day 3 hingegen befindet sich in der Forschungsphase, die ebenfalls von Car-2-Car Communication Consortium vorangetrieben wird. 
 
 %A citation: \cite{becker2008a} For referencing, see \autoref{sec:Introduction:Figures}
 
