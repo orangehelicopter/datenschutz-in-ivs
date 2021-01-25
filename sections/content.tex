@@ -10,10 +10,10 @@
 %%
 %% Version 1.0.2, 2020-05-07
 
-\section{Technische  Funktionsweise der C2C-Kommunikation}
+\section{Technische  Funktionsweise der C2X-Kommunikation}
 \label{ch:FirstContentSection}
 
-Im folgenden Abschnitt wird die Funktionsweise der C2C-Kommunikation und die dafür benötigte Infrastruktur näher beschrieben. Zuerst wird in Kapitel \ref{sec:FirstContentSection:ZeroSubSection} der Standard WAVE vorgestellt, der die moderne C-ITS Kommunikation definiert, und deren Bausteine werden näher beschrieben. Das Ziel von diesem Standard ist es, eine einheitliche Schnittstelle für die Car-to-Car und Car-to-Infrastructure, bzw. Nahbereichskommunikation zu ermöglichen.
+Im folgenden Abschnitt wird die Funktionsweise der C2X-Kommunikation und die dafür benötigte Infrastruktur näher beschrieben. Zuerst wird in Kapitel \ref{sec:FirstContentSection:ZeroSubSection} der Standard WAVE vorgestellt, der die moderne C-ITS Kommunikation definiert, und deren Bausteine werden näher beschrieben. Das Ziel von diesem Standard ist es, eine einheitliche Schnittstelle für die Car-to-Car und Car-to-Infrastructure, bzw. Nahbereichskommunikation zu ermöglichen.
 
 Im Abschnitt \ref{sec:FirstContentSection:FirstSubSection} wird die Public-Key Infrastruktur (PKI) beschreiben, die für den sicheren Nachrichtenaustausch zwischen den Verkehrsteilnehmern essenziell ist. Es wird auf die kryptografischen Prozesse und auf die organisatorische Stellenhierarchie eingegangen, die für die Implementierung einer PKI nötig sind. Abschließend werden einige Besonderheiten der europäischen PKI erwähnt.
 
@@ -98,12 +98,14 @@ Im Weiteren wird nur die CAM betrachtet, da die DENM keine personenbezogenen Dat
 \end{figure}
 \footnotetext{\emph{Kiometzis}, In: DuD 2017, 227}
 
+%Hier evtl Diskussion über was in die Nachricht gehört und ob andere Formate nötlg sind?
+
 \section{Anwendbarkeit der DSGVO}
-\label{sec:SecondContentSection:SecondSubsection}
+\label{ch:SecondContentSection}
 
 Die Datenschutzgrundverordnung (DSGVO) ist eine Verordnung, mit der die Regeln zur Verarbeitung personenbezogener Daten in der Europäischen Union vereinheitlicht werden. Sie ist am 25. Mai 2018 in Kraft getreten und hat zu dem Zeitpunkt geltende Richtlinie 95/46/EG zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten und zum freien Datenverkehr ersetzt. 
 
-In diesem Abschnitt wird diskutiert, ob die Erhebung von Fahrdaten in einer PKI ein datenschutzrechtliches Problem darstellt, und geprüft, ob die DSGVO in diesem Fall anwendbar ist. Des Weiteren werden mögliche Angriffe auf die Pseudonymität der Nachrichten aufgeführt, aufgrund deren Bewegungsprofile von Fahrzeugen erstellt werden können. Aktuell ist die Infrastruktur so konstruiert, dass Fahrzeuge Nachrichten und Zertifikate pseudonym versenden, und keine Zuordnung von mehreren über einen längeren Zeitraum versendeten Nachrichten zu einem Fahrzeug technisch möglich ist. Allerdings gibt es andere Methoden, wodurch solch eine Zuordnung ohne Zustimmung des Fahrers realisiert werden kann, diese werden im Abschnitt \ref{sec:FirstContentSection:ThirdSubSection} beschrieben. Darüber hinaus wird die Anwendbarkeit der DSGVO auf die in CAMs erhaltenen Fahrdaten diskutiert. Falls diese Daten personenbezogen sind, beziehungsweise für eine eindeutige Identifizierung der Person benutzt werden können, fällt ihre Verarbeitung unter DSGVO. Die Datenschutzrechtliche Bedeutung von Bewegungsprofilen wird im Abschnitt \ref{sec:SecondContentSection:SecondSubsection:FirstSubSubsection} diskutiert, und die Möglichkeit zur Herstellung des Personenbezugs wird im Abschnitt \ref{sec:SecondContentSection:SecondSubsection:FirstSubSubsection} analysiert.
+In diesem Abschnitt wird diskutiert, ob die Erhebung von Fahrdaten im Kontext von C-ITS ein datenschutzrechtliches Problem darstellt, und geprüft, ob die DSGVO in diesem Fall anwendbar ist. Des Weiteren werden mögliche Angriffe auf die Pseudonymität der Nachrichten aufgeführt, aufgrund deren Bewegungsprofile von Fahrzeugen erstellt werden können. Aktuell ist die Infrastruktur so konstruiert, dass Fahrzeuge Nachrichten und Zertifikate pseudonym versenden, und keine Zuordnung von mehreren über einen längeren Zeitraum versendeten Nachrichten zu einem Fahrzeug technisch möglich ist. Allerdings gibt es andere Methoden, wodurch solch eine Zuordnung ohne Zustimmung des Fahrers realisiert werden kann, diese werden im Abschnitt \ref{sec:FirstContentSection:ThirdSubSection} beschrieben. Darüber hinaus wird die Anwendbarkeit der DSGVO auf die in CAMs erhaltenen Fahrdaten diskutiert. Falls diese Daten personenbezogen sind, beziehungsweise für eine eindeutige Identifizierung der Person benutzt werden können, fällt ihre Verarbeitung unter DSGVO. Die Datenschutzrechtliche Bedeutung von Bewegungsprofilen wird im Abschnitt \ref{sec:SecondContentSection:SecondSubsection:FirstSubSubsection} diskutiert, und die Möglichkeit zur Herstellung des Personenbezugs wird im Abschnitt \ref{sec:SecondContentSection:SecondSubsection:FirstSubSubsection} analysiert.
 
 \subsection{Datensammlung und -auswertung}
 \label{sec:FirstContentSection:ThirdSubSection}
@@ -134,7 +136,7 @@ Eine besondere Sensibilität allein aus der Art der Daten einer CAM wird nach Ar
 
 
 \section{Vereinbarkeit mit datenschutzrechtlichen Prinzipien}
-\label{ch:SecondContentSection}
+\label{ch:ThirdContentSection}
 
 Da die DSGVO auf die in CAMs enthaltenen Daten anwendbar ist, muss sie während der Bearbeitung und ggf. Speicherung der Fahrdaten stets eingehalten werden. Dies ist von großer Wichtigkeit für Betreiber der PKI, Autohersteller und andere an C-ITS beteiligten Unternehmen, da die Nichteinhaltung der DSGVO für sie mit hohen Geldstrafen drohen könnte. In diesem Kapitel werden relevante Grundsätze der DSGVO angefürt und deren Einhaltung geprüft. Für jeden Grundsatz werden die Datenschutzmaßnahmen und offene Fragen beschrieben, die bei der Einführung einer C-ITS beachtet werden müssen. 
 
