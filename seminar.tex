@@ -63,6 +63,7 @@
 \setlength{\parskip}{0.7em}
 
 \usepackage{graphicx}
+\usepackage{float}
 
 %% ====================================
 %% ====================================
@@ -76,8 +77,11 @@
 %% Set PDF metadata
 \setpdf
 
+
 %% Set the title
 \maketitle
+
+\thispagestyle{empty}
 
 %% ----------------
 %% |   Abstract   |
@@ -85,18 +89,29 @@
  
 %% The text is included from the following files:
 %% - sections/abstract
+\begin{center}
+	{\large \textbf{ }}
+\end{center}
 
 \begin{abstract}
 \input{sections/abstract.tex}
 \end{abstract}
 
+\newpage
+
+\tableofcontents
+
+\thispagestyle{empty}
+
 \listoffigures
+
+\newpage
 
 %% -----------------
 %% |   Main part   |
 %% -----------------
 
-
+\pagenumbering{arabic}
 \input{sections/introduction.tex}
 \input{sections/content.tex}
 \input{sections/conclusion.tex}
