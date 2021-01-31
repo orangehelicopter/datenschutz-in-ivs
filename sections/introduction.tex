@@ -29,7 +29,7 @@ Anschließend wird auf die Herstellbarkeit des Personenbezugs eingegangen, da si
 \section{Hintergrund}
 \label{ch:Background}
 
-Bereits seit etwa Mitte der 2000er existieren einige technischen Lösungen für die Nahbereichskommunikation zwischen Fahrzeugen und ggf. Infrastrukturkomponenten. Zum Beispiel, die IEEE 802.11p ist eine WLAN-Variante, die aktuell in Europa als Funkstandard für Intelligente Verkehrssysteme (IVS) gilt. Weiterhin existieren mehrere Spezifikationen des ETSI (Europäisches Institut für Telekommunikationsnormen), die unter anderem Nachrichtenformate festlegen\footnote{\emph{Strubbe/Thenée/Wieschebrink}, DuD 41.4, S. 224}. \nocite{Strubbe2017}
+Bereits seit etwa Mitte der 2000er existieren einige technischen Lösungen für die Nahbereichskommunikation zwischen Fahrzeugen und ggf. Infrastrukturkomponenten. Zum Beispiel ist die IEEE 802.11p eine WLAN-Variante, die aktuell in Europa als Funkstandard für Intelligente Verkehrssysteme (IVS) gilt. Darüber hinaus existiert eine neuere und performantere \textit{Cellular-V2X} Technologie von der 5G Automotive Association, die auf dem 5G Mobilfunkstandard basiert ist und sich aktuell in der Entwicklung befindet\footnote{\emph{The Case for Cellular V2X for Safety and Cooperative Driving, 5G Automotive Association}, 2016, S. 2.}. \nocite{5GAA2016}Weiterhin existieren mehrere Spezifikationen des ETSI (Europäisches Institut für Telekommunikationsnormen), die unter anderem Nachrichtenformate festlegen\footnote{\emph{Strubbe/Thenée/Wieschebrink}, DuD 41.4, 2017, S. 224.}. \nocite{Strubbe2017}
 
 Das Ziel der IVS ist es vor allem, den Verkehrsfluss zu verbessern und Unfälle vorzubeugen. Die Autofahrer sollen so früh wie möglich vor Gefahren auf der Fahrstrecke gewarnt werden, selbst wenn diese noch nicht im Sichtbereich sind. So können sie entsprechend reagieren und ihr Fahrverhalten frühzeitig anpassen, um Staus oder sogar zusätzliche Unfälle zu vermeiden. Als ein Beispiel im IVS Kontext kann man Sonderfahrzeuge nehmen (z.B. Kranken- oder Feuerwehrwagen) - diese sollten eine sogenannte ``Blaulichtnachricht''  versenden und somit andere Fahrzeuge darauf hinweisen, dass sie eine Rettungsgasse bilden sollten. Die C2X-Nachrichten auf Basis von 802.11p haben eine Reichweite von bis zu 800 Metern, was herkömmliche Sirenen von z.B. Krankenwagen weit übersteigt, besonders in dicht bewohnten Stadtgebieten.
 
@@ -39,9 +39,9 @@ Die Initiativen zur Standardisierung der C2X-Kommunikation liegen jedoch weiter 
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{|m{4em}|m{10em}|m{10em}|m{8em}|} 
+	\begin{tabular}{|m{4em}||m{10em}|m{10em}|m{8em}|} 
 		\hline
-		& Day 1 & Day 2 & Day 3 \\ [1ex]
+		& \textbf{Day 1} & \textbf{Day 2} & \textbf{Day 3} \\ [1ex]
 		\hline
 		Fokus & Awareness driving & Sensing driving & Cooperative driving \\ [1ex]
 		\hline 
