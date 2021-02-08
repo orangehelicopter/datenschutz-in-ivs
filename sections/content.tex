@@ -29,7 +29,7 @@ Die zwei Hauptkomponenten der WAVE Architektur sind \emph{On Board Unit (OBU)} -
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{images/VANET}
-	\caption[Überblick über die WAVE Architektur]{Überblick über die WAVE Architektur \footnotemark \nocite{VANET}}
+	\caption[Überblick über die WAVE Architektur]{Überblick über die WAVE Architektur\footnotemark \nocite{VANET}}
 	\label{fig:vanet}
 \end{figure}
 
@@ -53,7 +53,7 @@ Darüber hinaus gibt es zwei Arten von Sub-CAs: Enrolment Authorities (EA) und A
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{images/PKI}
-	\caption[Aufbau einer PKI für C2X Kommunikation]{Aufbau einer PKI für C2X Kommunikation \footnotemark}
+	\caption[Aufbau einer PKI für C2X Kommunikation]{Aufbau einer PKI für C2X Kommunikation\footnotemark}
 	\label{fig:pki}
 \end{figure}
 \footnotetext{\emph{Strubbe}, DuD 2017, S. 225}
@@ -87,7 +87,7 @@ CAMs werden von End-Entitäten in regelmäßigen Abständen verschickt, um koope
 \begin{figure}
 	\centering
  	\includegraphics[width=0.7\linewidth]{images/Nachrichtenaufbau}
-	\caption[Grobaufbau einer verschlüsselten Nachricht]{Grobaufbau einer verschlüsselten Nachricht \footnotemark}
+	\caption[Grobaufbau einer verschlüsselten Nachricht]{Grobaufbau einer verschlüsselten Nachricht\footnotemark}
 	\label{fig:nachrichtenaufbau}
 \end{figure}
 \footnotetext{\emph{Strubbe}, DuD 2017, 223}
@@ -97,7 +97,7 @@ Im Weiteren wird nur die CAM betrachtet, da die DENM keine personenbezogenen Dat
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{images/CAM}
-	\caption[Detallierter Aufbau einer CAM]{Detallierter Aufbau einer CAM \footnotemark}
+	\caption[Detallierter Aufbau einer CAM]{Detallierter Aufbau einer CAM\footnotemark}
 	\label{fig:cam}
 \end{figure}
 \footnotetext{\emph{Kiometzis/Ullmann}, DuD 2017, 228}
@@ -123,10 +123,10 @@ Als erstes Beispiel sei ein sogenannter 'Big Brother Angreifer' angeführt, der 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{images/big-brother}
-	\caption[Big Brother Angreifer Szenario]{Big Brother Angreifer Szenario\nocite{SernaOlvera} \footnotemark}
+	\caption[Big Brother Angreifer Szenario]{Big Brother Angreifer Szenario\nocite{SernaOlvera}\footnotemark}
 	\label{fig:bigbro}
 \end{figure}
-\footnotetext{\emph{Serna-Olvera}, A Trust-driven Privacy Architecture for Vehicular Ad-Hoc Networks, 2013, S. 5}
+\footnotetext{\emph{Serna-Olvera}, A Trust-driven Privacy Architecture for Vehicular Ad-Hoc Networks, 2013, S. 5.}
 
 Darüber hinaus gibt es einige Möglichkeiten, die Bewegungen von einzelnen Fahrzeugen detailliert aufzuzeichnen. Zum Beispiel kann man mithilfe eines sich mit dem Fahrzeug bewegendes Überwachungstools sogenannte \textit{CAM-Traces} erstellen, d.h. die gefahrene Strecke eines Fahrzeugs und alle von ihm auf dieser Strecke erstellten CAMs. Auch wenn das Fahrzeug regelmäßig seinen Signaturschlüssel wechselt, würde es reichen, nur eine CAM aus der \textit{CAM-Trace} dem Fahrzeug eindeutig zuzuordnen, um die gesamte \textit{CAM-Trace} diesem Fahrzeug zuzuordnen\footnote{\emph{Kiometzis/Ullmann}, DuD 2017, S. 229.}\nocite{Kiometzis2017}. 
 
@@ -150,9 +150,7 @@ Außerdem wäre es durch die Anwendung von künstlicher Intelligenz und maschine
 
 Nach Art. 4 Nr. 1 DSGVO sind personenbezogene Daten alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. Selbst wenn CAMs direkt keine primären Identifikationsmerkmale enthalten (z.B. die Fahrzeugidentifizierungsnummer), kann deren Personenbezug grundsätzlich mit Zusatzwissen hergestellt werden. Technisch kann das durch eine Auflösung des Pseudonyms bei einer Certification Authority erfolgen\footnote{\emph{Kiometzis/Ullmann}, DuD 2017, S. 230.}\nocite{Kiometzis2017}, aber auch durch andere Wege. Zum Beispiel kann man anhand einer CAM-Trace aufgrund der am meisten gefahrenen Strecken den Wohn- und Arbeitsort einer Person identifizieren. Außerdem wäre es zum Beispiel möglich, durch Datenanalyse die Anomalien in der Menge von den aufgezeichneten CAM-Traces identifizieren und versuchen, sie auf Personen mit entsprechendem Tagesablauf zurückzuführen. Besonders in wenig befahrenen Gebieten wäre diese Technik erfolgreich. Letztendlich wäre in vielen Situationen der einfachste Weg, vor Ort das Fahrzeug zu identifizieren (z.B. durch aufgezeichnete Videos oder Zeugenaussagen), und später aus dem Datenbestand die entsprechende CAM-Trace auszusuchen. Alle oben ausgeführten Techniken voraussetzen natürlich eine umfassende Erfassung von Fahrdaten und einen vorhandenen Bestand von Bewegungsprofilen (z.B. den im Kapitel \ref{sec:FirstContentSection:ThirdSubSection} beschriebenen Big Brother Angreifer).
 
-Eine besondere Sensibilität allein aus der Art der Daten einer CAM wird nach Art. 9 EU-DSGVO nicht begründet\footnote{\emph{Weichert}, SVR 2016, 361.}\nocite{Weichert2016}. Allerdings genügt für die datenschutzrechtliche Betrachtung bereits die abstrakte rechtliche Möglichkeit der Informationsverknüpfung. Das heißt: falls es technisch möglich ist, den Fahrzeughalter aus den Daten zu identifizieren, fällt die Erhebung von CAMs unter die DSGVO - unabhängig davon, ob die Voraussetzungen dafür tatsächlich erfüllt sind  \footnote{\emph{Specht/Mantz}, Handbuch Europäisches und deutsches Datenschutzrecht, 1. Aufl., 2019, Rn. 12, 13.}. Dies könnte sich zukünftig mit der Einsetzung von Shared Mobility-Konzepten ändern, falls man überwiegend nur kurzzeitig ein Fahrzeug anmietet und die Fahrzeugnummer nicht mehr auf natürliche Personen zurückgeführt werden kann. 
-
-% TODO: Shared Mobility
+Eine besondere Sensibilität allein aus der Art der Daten einer CAM wird nach Art. 9 EU-DSGVO nicht begründet\footnote{\emph{Weichert}, SVR 2016, 361.}\nocite{Weichert2016}. Allerdings genügt für die datenschutzrechtliche Betrachtung bereits die abstrakte rechtliche Möglichkeit der Informationsverknüpfung. Das heißt: falls es technisch möglich ist, den Fahrzeughalter aus den Daten zu identifizieren, fällt die Erhebung von CAMs unter die DSGVO - unabhängig davon, ob die Voraussetzungen dafür tatsächlich erfüllt sind  \footnote{\emph{Specht/Mantz}, Handbuch Europäisches und deutsches Datenschutzrecht, 1. Aufl., 2019, Rn. 12, 13.}. Dies könnte sich zukünftig mit der Einsetzung von Shared Mobility-Konzepten ändern, falls man überwiegend nur kurzzeitig ein Fahrzeug anmietet und die Fahrzeugnummer nicht mehr auf natürliche Personen zurückgeführt werden kann. In diesem Fall wäre das Shared-Mobility Unternehmen für die aufbewahrten Daten verantwortlich, da es die Informationen darüber besitzt, welches Auto wann und von wem gemietet wurde. Zusammen mit den CAM-Traces von den gemieteten Fahrzeugen könnten Bewegungsprofile und deren Personenbezug nachweislich hergestellt werden.
 
 
 \section{Vereinbarkeit mit datenschutzrechtlichen Prinzipien}
@@ -162,12 +160,9 @@ Da die DSGVO auf die in CAMs enthaltenen Daten anwendbar ist, muss sie während 
 
 \subsection{Grundsatz der Datenminimierung}
 
-Nach Art. 5 Abs. 1c DSGVO ist der Grundsatz der Datenminimierung folgendermaßen definiert: "Personenbezogene Daten müssen dem Zweck angemessen und erheblich sowie auf das für die Zwecke der Verarbeitung notwendige Maß beschränkt sein". Im Kontext von Intelligenten Verkehrssystemen heißt das, dass eine Erstellung von Bewegungs- und Verhaltensprofilen verhindert werden muss. Nach Kiometzis u.a. \nocite{Kiometzis2017}ergeben sich demzufolge 3 Maßnahmen, die für Datenminimierung bei der C2X-Kommunikation sorgen könnten\footnote{\emph{Kiometzis/Ullmann}, DuD 2017, S. 231.}:
-\begin{itemize}
-	\item Transparenzgrundsatz: dem Fahrzeugführer soll transparent angezeigt werden, dass sich das Fahrzeug am Versand von CAMs und DENMs beteiligt. 
-	\item C-2-C Deaktivierungsmöglichkeit: der Fahrzeugführer muss selektiv in der Lage sein, den aktiven Versand von CAMs und DENMs zu deaktivieren.
-	\item Vorkonfigurierte C-2-C Standardeinstellung: als Standardkonfiguration wäre es ausreichend, wenn Fahrzeuge CAMs und DENMs empfangen können aber ausschließlich DENMs verschicken
-\end{itemize}
+Nach Art. 5 Abs. 1c DSGVO ist der Grundsatz der Datenminimierung folgendermaßen definiert: "Personenbezogene Daten müssen dem Zweck angemessen und erheblich sowie auf das für die Zwecke der Verarbeitung notwendige Maß beschränkt sein". Im Kontext von Intelligenten Verkehrssystemen heißt das, dass eine Erstellung von Bewegungs- und Verhaltensprofilen verhindert werden muss. 
+
+
 
 Außerdem sollte man beim Entwurf einer IVS darauf achten, dass eine geeignete Pseudonimisierung erfolgen kann. Die grundlegende Anforderung ist hier, dass die Verschlüsselungs-Zertifikate sich regelmäßig ändern müssen, so dass man die CAMs bei der zentralen Sammelstelle nicht auf die gleiche Person zurückführen kann. Wir haben aber bereits gesehen, dass die Zuordnung zur Identität einigermaßen auch mit sich ständig wechselnden Zertifikaten erfolgen kann. Daher stellt sich die Frage, welche Daten in CAMs gespeichert werden müssen, und ob ein Nachrichtenformat für alle Zwecke ausreichend ist.
 
@@ -199,7 +194,17 @@ Hier ist es wichtig zu betonen, dass der Artikel sich auf die Fahrdaten bezieht,
 
 Die wichtigste Herausforderung im Kontext von IVS besteht zunächst darin, die beim Fahrzeughersteller oder beim Betreiber der PKI gespeicherten Daten im maschinenlesbaren Format betroffenen Personen zugänglich zu machen. Um Art. 20 Abs. 4 DSGVO gerecht zu werden, müssen die Verantwortlichen dabei die Rechte der Drittbetroffenen beachten, da beim Bereitstellen der Daten möglicherweise die Daten der anderen Verkehrsteilnehmern übermittelt werden könnten\footnote{\emph{Klink-Straub/Straub}, ZD 2018, 463.}. Letztens müssen die Datenschutzmechanismen bei den Empfängern der Daten (z.B. Händler, Werkstätten, Versicherungen) unter die Lupe genommen werden, da sie beim Empfang der Daten nach Art. 20 Abs. 2 DSGVO selbst zu Verantwortlichen werden.
 
+\subsection{Andere datenschutzrechtlichen Prinzipien}
 
+...
+Nach Kiometzis u.a. \nocite{Kiometzis2017}ergeben sich 3 Maßnahmen, die für die Einhaltung der datenschutzrechtlichen Normen bei der C2X-Kommunikation sorgen könnten\footnote{\emph{Kiometzis/Ullmann}, DuD 2017, S. 231.}. Hierbei werden sie zusammengefasst und mit entsprechenden Artikeln der DSGVO ergänzt:
+\begin{itemize}
+	\item Dem Fahrzeugführer soll transparent angezeigt werden, dass sich das Fahrzeug am Versand von CAMs und DENMs beteiligt (Art. 5 Abs. 1a DSGVO - Transparenzgrundsatz). 
+	\item C2C Deaktivierungsmöglichkeit: der Fahrzeugführer muss selektiv in der Lage sein, den aktiven Versand von CAMs und DENMs zu deaktivieren. (Art. 21 DSGVO - Widerspruchsrecht)
+	\item Vorkonfigurierte C-2-C Standardeinstellung: als Standardkonfiguration wäre es ausreichend, wenn Fahrzeuge CAMs und DENMs empfangen können aber ausschließlich DENMs verschicken. (Art. 6 Abs. 1a DSGVO - freiwillige Einwilligung)
+\end{itemize}
+
+Bei der zweiten Empfehlung (C2C Deaktivierungsmöglichkeit)  ist es allerdings zu beachten, dass die Deaktivierung von DENMs keine datenschutzrechtlichen Vorteile bringen würde, da die dort enthaltenen Daten nicht personenbezogen sind. Außerdem könnte es zu einer Verringerung der Straßensicherheit führen, da DENMs möglicherweise sicherheitskritische Informationen enthalten können, die somit nicht anderen Verkehrsteilnehmern mitgeteilt werden. 
 
 %Add additional content sections if required by adding new .tex files in the
 %\code{sections/} directory and adding an appropriate 
